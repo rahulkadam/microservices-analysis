@@ -9,4 +9,5 @@ import org.springframework.context.annotation.Configuration;
 @Data
 public class MIPProperties {
     private String url;
+    private Boolean disable;
 }

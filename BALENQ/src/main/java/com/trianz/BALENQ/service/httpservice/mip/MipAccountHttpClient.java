@@ -18,6 +18,11 @@ public class MipAccountHttpClient {
     private MIPProperties mipProperties;
 
     public AccountDTO getAccountDetails(AccountDTO accountDTO) {
+        if (mipProperties.getDisable()) {
+            accountDTO.setName("MIP disabled");
+            accountDTO.setBalance((long)(accountDTO.getId() + 200));
+            return accountDTO;
+        }
         HttpEntity<AccountDTO> request = new HttpEntity<>(accountDTO);
         String url = mipProperties.getUrl();
         String fullUrl = url + "/account/details";
