@@ -1,4 +1,4 @@
-package com.trianz.mip.mip.mipenum;
+package com.trianz.BALENQ.dto;
 
 public enum TransactionRequestType {
     CREDIT("CR"), DEBIT("DB");

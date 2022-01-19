@@ -1,6 +1,5 @@
-package com.trianz.mip.mip.dto;
+package com.trianz.BALENQ.dto;
 
-import com.trianz.mip.mip.mipenum.TransactionRequestType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

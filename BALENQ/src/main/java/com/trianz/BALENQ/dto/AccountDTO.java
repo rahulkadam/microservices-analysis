@@ -1,4 +1,4 @@
-package com.trianz.mip.mip.dto;
+package com.trianz.BALENQ.dto;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

@@ -14,4 +14,10 @@ public class AccountService {
         accountDTO.setId(id);
         return accountDTO;
     }
+
+    public AccountDTO getAccountDetails(AccountDTO accountDTO) {
+        accountDTO.setBalance(102l);
+        accountDTO.setName("Random users");
+        return accountDTO;
+    }
 }

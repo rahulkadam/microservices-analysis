@@ -1,15 +1,13 @@
-package com.trianz.BALENQ.serviceImpl;
+package com.trianz.BALENQ.service;
 
 import com.trianz.BALENQ.constants.ApplicationConstant;
 import com.trianz.BALENQ.dto.BalanceEnquiryDTO;
-import com.trianz.BALENQ.service.CustomerBalanceEnquiry;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CustomerBalanceService implements CustomerBalanceEnquiry {
+public class CustomerBalanceService {
 
 
-    @Override
     public BalanceEnquiryDTO getCustomerBalance(BalanceEnquiryDTO balanceEnquiryDTO) {
        String  msisdn= balanceEnquiryDTO.getMsisdn();
         if(!validator(msisdn)) {
@@ -24,7 +22,7 @@ public class CustomerBalanceService implements CustomerBalanceEnquiry {
 
     public long  getBalanceByMsisdn(String msisdn){
         String balance= msisdn.substring(6);
-        return  Long.valueOf(balance);
+        return  Long.parseLong(balance);
     }
 
     public boolean validator(String msisdn){
@@ -32,19 +30,4 @@ public class CustomerBalanceService implements CustomerBalanceEnquiry {
         return msisdn.matches(ptrn) &&  msisdn.length()==10;
     }
 
-     /* @GetMapping(value = "/balanceEnquiry/{msisdn}", produces = "application/json")
-    public String customerBalanceEnquiry2(@PathVariable String msisdn){
-            if(!validator(msisdn)){
-                return INVALID_MSISDN;
-            }else if( msisdn.length()!=10 ) {
-                return INVALID_MSISDN;
-            }
-
-        return msisdn.substring(6);
-    }
-
-    public boolean validator(String msisdn){
-        String ptrn = "[0-9]+";
-        return msisdn.matches(ptrn);
-    }*/
 }
