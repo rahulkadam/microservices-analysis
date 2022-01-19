@@ -1,0 +1,163 @@
+Docker + Kubernetis :
+
+kubectl config get-contexts
+kubectl version --client
+kubectl cluster-info
+kubectl get deployemnts
+kubectl get pods
+kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1
+
+echo -e "\n\n\n\e[92mStarting Proxy. After starting it will not output a response. Please click the first Terminal Tab\n";
+kubectl proxy
+
+//Proxy for Kubectl
+kubectl proxy
+
+curl http://localhost:8001/version
+curl localhost:30506
+
+export POD_NAME=$(kubectl get pods -o go-template --template '{{range .items}}{{.metadata.name}}{{"\n"}}{{end}}')
+echo Name of the Pod: $POD_NAME
+
+kubectl exec $POD_NAME -- env
+kubectl exec -ti $POD_NAME -- bash
+kubectl exec -ti kubernetes-bootcamp-7f76c9cc65-hf272  -- sh
+kubectl get deployments
+kubectl get pods
+kubectl get services
+kubectl delete service -l app=kubernetes-bootcamp
+kubectl describe services/kubernetes-bootcamp
+
+kubectl get pods -l app=kubernetes-bootcamp
+kubectl get services -l app=kubernetes-bootcamp
+kubectl expose deployment/kubernetes-bootcamp1 --type="NodePort" --port 8080
+kubectl scale deployments/kubernetes-bootcamp --replicas=2
+kubectl get pods -o wide
+
+kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+kubectl rollout status deployments/kubernetes-bootcamp
+kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=gcr.io/google-samples/kubernetes-bootcamp:v10
+kubectl rollout undo deployments/kubernetes-bootcamp
+
+kubectl get svc kubernetes-bootcamp -oyaml
+kubectl get -o wide svc kubernetes-bootcamp
+
+export NODE_PORT=$(kubectl get services/kubernetes-bootcamp1 -o go-template='{{(index .spec.ports 0).nodePort}}')
+echo NODE_PORT=$NODE_PORT
+
+kubectl exec -ti $POD_NAME -- curl localhost:8080
+
+
+
+************************************************************************************************
+OutPut :
+Admins-MacBook-Pro:log admin$ kubectl get deployment
+NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
+kubernetes-bootcamp    1/1     1            1           12h
+kubernetes-bootcamp1   1/1     1            1           31m
+nginx-deployment       2/2     2            2           5d6h
+Admins-MacBook-Pro:log admin$ kubectl get pods
+NAME                                    READY   STATUS    RESTARTS   AGE
+kubernetes-bootcamp-7f76c9cc65-hf272    1/1     Running   0          12h
+kubernetes-bootcamp1-6df8d49485-5vt4h   1/1     Running   0          31m
+nginx-deployment-66b6c48dd5-6ctlr       1/1     Running   0          5d6h
+nginx-deployment-66b6c48dd5-72tss       1/1     Running   0          5d6h
+Admins-MacBook-Pro:log admin$ kubectl get rs
+NAME                              DESIRED   CURRENT   READY   AGE
+kubernetes-bootcamp-7f76c9cc65    1         1         1       12h
+kubernetes-bootcamp1-6df8d49485   1         1         1       31m
+nginx-deployment-66b6c48dd5       2         2         2       5d6h
+Admins-MacBook-Pro:log admin$ kubectl get service
+NAME                   TYPE        CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE
+kubernetes             ClusterIP   10.96.0.1     <none>        443/TCP          5d20h
+kubernetes-bootcamp    NodePort    10.101.53.0   <none>        3000:30506/TCP   22m
+kubernetes-bootcamp1   NodePort    10.97.7.64    <none>        8080:30838/TCP   30m
+Admins-MacBook-Pro:log admin$ kubectl get -o wide svc kubernetes-bootcamp
+NAME                  TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)          AGE   SELECTOR
+kubernetes-bootcamp   NodePort   10.101.53.0   <none>        3000:30506/TCP   29m   app=kubernetes-bootcamp
+
+Admins-MacBook-Pro:log admin$ kubectl get svc kubernetes-bootcamp -oyaml
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2021-10-12T06:02:17Z"
+  labels:
+    app: kubernetes-bootcamp
+  name: kubernetes-bootcamp
+  namespace: default
+  resourceVersion: "150670"
+  uid: 487769de-1c81-4c3e-9f67-a8e0d6d65e1f
+spec:
+  clusterIP: 10.101.53.0
+  clusterIPs:
+  - 10.101.53.0
+  externalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 30506
+    port: 3000
+    protocol: TCP
+    targetPort: 3000
+  selector:
+    app: kubernetes-bootcamp
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer:
+    ingress:
+    - hostname: localhost
+************************************************************************************************
+
+************************************************************************************************
+Create Deployment and Service :
+kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1    // Create Deployment
+kubectl expose deployment/kubernetes-bootcamp1 --type="NodePort" --port 8080   // Expore Service
+kubectl delete service -l app=kubernetes-bootcamp    // Delete Service
+kubectl delete deployment/nginx-deployment   // Delete Deployemnt
+kubectl delete deployment,services -l app=nginx    // based on selecter
+kubectl delete service fantasy-webapp-service
+
+kubectl expose pod mysql --port=3306 --name=mysql-export-api --type=NodePort
+kubectl expose pod ipl-service-5694fdb8bf-kglg5 --port=8080 --name=fantasy-expose-api --type=NodePort
+
+curl localhost:30506  // run Service
+************************************************************************************************
+
+************************************************************************************************
+Inside Container -
+kubectl exec mysql-service-797468cddc-ld4ms   -it -- bash
+************************************************************************************************
+
+
+reference : https://linoxide.com/deploy-mysql-on-kubernetes/
+docker image rm ipl:fantasy-2021
+docker image build . -t ipl:fantasy-2022
+
+kubectl logs ipl-service-5694fdb8bf-5xx6j
+
+
+kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+
+kubectl set image deployments/ipl-service ipl-service=ipl:fantasy-2022v1
+
+// dashboard tutorial
+https://upcloud.com/community/tutorials/deploy-kubernetes-dashboard/
+
+kubectl get secret -n kubernetes-dashboard $(kubectl get serviceaccount admin-user -n kubernetes-dashboard -o jsonpath="{.secrets[0].name}") -o jsonpath="{.data.token}" | base64 --decode
+
+
+https://dbafromthecold.com/2020/11/23/differences-between-using-a-load-balanced-service-and-an-ingress-in-kubernetes/
+
+
+Google Console :
+https://console.cloud.google.com/apis/credentials?project=garvdemo-1254
+
+
+
+https://learnk8s.io/spring-boot-kubernetes-guide
+
+
+Running and executing from YML - all configuration
+create -f MCA-BALENQ-deployment.yaml
