@@ -115,8 +115,8 @@ Create Deployment and Service :
 kubectl create deployment kubernetes-bootcamp --image=gcr.io/google-samples/kubernetes-bootcamp:v1    // Create Deployment
 kubectl expose deployment/kubernetes-bootcamp1 --type="NodePort" --port 8080   // Expore Service
 kubectl delete service -l app=kubernetes-bootcamp    // Delete Service
-kubectl delete deployment/nginx-deployment   // Delete Deployemnt
-kubectl delete deployment,services -l app=nginx    // based on selecter
+kubectl delete deployment/nginx-deployment   // Delete Deployement
+kubectl delete deployment,services -l app=nginx    // based on selector
 kubectl delete service fantasy-webapp-service
 
 kubectl expose pod mysql --port=3306 --name=mysql-export-api --type=NodePort
@@ -137,6 +137,8 @@ docker image build . -t ipl:fantasy-2022
 
 kubectl logs ipl-service-5694fdb8bf-5xx6j
 
+//
+kubectl delete all --all --all-namespaces
 
 kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
 
@@ -154,10 +156,17 @@ https://dbafromthecold.com/2020/11/23/differences-between-using-a-load-balanced-
 Google Console :
 https://console.cloud.google.com/apis/credentials?project=garvdemo-1254
 
-
+kubectl set image deployments/balance-enquiry-service balance-enquiry-service=mca:balance-enquiry-v2
 
 https://learnk8s.io/spring-boot-kubernetes-guide
 
 
 Running and executing from YML - all configuration
 create -f MCA-BALENQ-deployment.yaml
+
+
+kubectl exec balance-enquiry-service-bb7b59cd5-qnbwb -it --sh
+
+
+Getting all the Env variable :
+kubectl exec balance-enquiry-service-bb7b59cd5-559t9 -- env

@@ -19,7 +19,7 @@ public class MipAccountHttpClient {
 
     public AccountDTO getAccountDetails(AccountDTO accountDTO) {
         if (mipProperties.getDisable()) {
-            accountDTO.setName("MIP disabled");
+            accountDTO.setName("MIP disabled" + mipProperties.getDisable() + " : " + mipProperties.getUrl());
             accountDTO.setBalance((long)(accountDTO.getId() + 200));
             return accountDTO;
         }
