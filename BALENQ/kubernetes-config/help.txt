@@ -170,3 +170,12 @@ kubectl exec balance-enquiry-service-bb7b59cd5-qnbwb -it --sh
 
 Getting all the Env variable :
 kubectl exec balance-enquiry-service-bb7b59cd5-559t9 -- env
+
+
+kubectl scale --replicas=3 deployment balance-enquiry-service
+
+// Docker pull specific image
+docker image pull tomcat:8.0
+
+
+https://medium.com/@pra4mesh/deploy-war-in-docker-tomcat-container-b52a3baea448
